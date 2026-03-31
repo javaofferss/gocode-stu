@@ -1,7 +1,9 @@
 package main
 
-/**
-  if for
+/*
+*
+
+	if for
 */
 func main() {
 	var money = 1000
