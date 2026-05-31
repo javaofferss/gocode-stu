@@ -18,6 +18,8 @@ func testSet() {
 	fmt.Println(set)
 	fmt.Println(set["1"]) //这里可以看作包含. 返回true
 	fmt.Println(set["4"]) // 这里不存在，返回false
+	delete(set, "1")      //删除key
+	fmt.Println(set)
 
 }
 
