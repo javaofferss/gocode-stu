@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 func main() {
 	testSlice()
@@ -28,4 +31,21 @@ func testSlice() {
 	list = append(list, "1")
 	list = append(list, "2")
 	fmt.Println(list)
+
+	//测试截取
+	fmt.Println(list[0:1]) //[1]
+	fmt.Println(list[0:0]) //[]
+	fmt.Println(list[1:])  //[2]
+
+	//长度
+	fmt.Println(len(list)) //2
+
+	//删除元素
+	newList := list[1:]
+	fmt.Println(newList, reflect.TypeOf(newList)) //[2] []string
+	newList3 := append(newList, "3")
+	var addr = &newList
+	fmt.Println(addr, reflect.TypeOf(addr)) //&[2] *[]string
+	fmt.Printf("%p\n", addr)                //0x72e4780ba060
+	fmt.Println(newList3, &newList3)        //[2 3] &[2 3]
 }
