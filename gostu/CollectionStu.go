@@ -3,9 +3,15 @@ package main
 import (
 	"fmt"
 	"reflect"
+
+	"github.com/elliotchance/orderedmap/v2"
+	"github.com/emirpasic/gods/maps/treemap"
 )
 
 func main() {
+	testTreeMap()
+	testLinkedMap()
+	testMap()
 	testSlice()
 	testSet()
 
@@ -50,4 +56,66 @@ func testSlice() {
 	fmt.Println(addr, reflect.TypeOf(addr)) //&[2] *[]string
 	fmt.Printf("%p\n", addr)                //0x72e4780ba060
 	fmt.Println(newList3, &newList3)        //[2 3] &[2 3]
+}
+
+func testMap() {
+	var mapObj map[string]int = make(map[string]int)
+	//put
+	mapObj["name"] = 1
+	fmt.Println(mapObj["name"]) //1
+	fmt.Println(mapObj)         //map[name:1]
+
+	//replace
+	mapObj["name"] = 2
+	fmt.Println(mapObj) //map[name:1]
+
+	//长度
+	fmt.Println(len(mapObj)) //1
+
+	//遍历
+	for k, v := range mapObj {
+		fmt.Println(k, v) //name 2
+	}
+
+	//delete
+	delete(mapObj, "name")
+	fmt.Println(mapObj) //map[]
+
+}
+
+func testTreeMap() {
+	comparator := treemap.NewWithStringComparator()
+	comparator.Put("c", 1)
+	comparator.Put("a", 2)
+
+	for _, key := range comparator.Keys() {
+		value, _ := comparator.Get(key)
+		fmt.Println(key, value)
+		/**
+		a 2
+		c 1
+		*/
+	}
+
+	// 这里和java里面api 感觉刚好相反.
+	key, value := comparator.Floor("b")
+	fmt.Println(key, value) //打印 a 2
+
+	// 这里和java里面api 感觉刚好相反.
+	foundKey, foundValue := comparator.Ceiling("b")
+	fmt.Println(foundKey, foundValue) //打印 c 1
+
+}
+
+func testLinkedMap() {
+	//golang sdk 没有treeMap. 所以需要依赖第三方的. 通过调用NewOrderedMap函数获取
+	sortMap := orderedmap.NewOrderedMap[string, int]()
+	sortMap.Set("b", 2)
+	sortMap.Set("a", 3)
+	fmt.Println(sortMap)
+
+	//遍历, 按照插入的顺序遍历
+	for key, v := range sortMap.Keys() {
+		fmt.Println(key, v)
+	}
 }
